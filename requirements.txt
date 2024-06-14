@@ -1,0 +1,9 @@
+flask
+flask_sqlalchemy
+flask_marshmallow
+flask_restful
+flask_swagger_ui
+Flask-Migrate
+flasgger
+faker
+marshmallow-sqlalchemy

@@ -1,0 +1,840 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Firewall API",
+    "version": "1.0.0",
+    "description": "API for managing firewalls and associated policies"
+  },
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "firewalls",
+      "description": "Operations related to firewalls"
+    },
+    {
+      "name": "policies",
+      "description": "Operations related to firewall policies"
+    }
+  ],
+  "paths": {
+    "/firewalls": {
+      "post": {
+        "tags": [
+          "firewalls"
+        ],
+        "summary": "Create a new firewall",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Firewall object to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FirewallInput"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Firewall created successfully",
+            "schema": {
+              "$ref": "#/definitions/Firewall"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "firewalls"
+        ],
+        "summary": "Get all firewalls",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of firewalls",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Firewall"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/firewalls/{firewall_id}": {
+      "get": {
+        "tags": [
+          "firewalls"
+        ],
+        "summary": "Get firewall by ID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "firewall_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Firewall found",
+            "schema": {
+              "$ref": "#/definitions/Firewall"
+            }
+          },
+          "404": {
+            "description": "Firewall not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "firewalls"
+        ],
+        "summary": "Update firewall by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "firewall_id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated firewall object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FirewallInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Firewall updated successfully",
+            "schema": {
+              "$ref": "#/definitions/Firewall"
+            }
+          },
+          "404": {
+            "description": "Firewall not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "firewalls"
+        ],
+        "summary": "Delete firewall by ID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "firewall_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Firewall deleted successfully"
+          },
+          "404": {
+            "description": "Firewall not found"
+          }
+        }
+      }
+    },
+    "/firewalls/{firewall_id}/activate": {
+      "put": {
+        "tags": [
+          "firewalls"
+        ],
+        "summary": "Activate firewall by ID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "firewall_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Firewall activated successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/firewalls/{firewall_id}/deactivate": {
+      "put": {
+        "tags": [
+          "firewalls"
+        ],
+        "summary": "Deactivate firewall by ID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "firewall_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Firewall deactivated successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/firewalls/{firewall_id}/policies": {
+      "post": {
+        "tags": [
+          "firewalls"
+        ],
+        "summary": "Add policy to firewall",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "firewall_id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Policy ID to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "policy_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Policy added to firewall successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "firewalls"
+        ],
+        "summary": "Get policies of firewall",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "firewall_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of policies associated with firewall",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "policies": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/firewalls/{firewall_id}/policies/{policy_id}": {
+      "delete": {
+        "tags": [
+          "firewalls"
+        ],
+        "summary": "Remove policy from firewall",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "firewall_id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "policy_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Policy removed from firewall successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/policies": {
+      "post": {
+        "tags": [
+          "policies"
+        ],
+        "summary": "Create a new policy",
+        "description": "Create a new policy with provided data.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Policy object to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PolicyInput"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Policy created successfully",
+            "schema": {
+              "$ref": "#/definitions/Policy"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "policies"
+        ],
+        "summary": "Get all policies",
+        "description": "Retrieve all policies.",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of policies",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Policy"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/policies/{policy_id}": {
+      "get": {
+        "tags": [
+          "policies"
+        ],
+        "summary": "Get policy by ID",
+        "description": "Retrieve a policy by its ID.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "policy_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Policy found",
+            "schema": {
+              "$ref": "#/definitions/Policy"
+            }
+          },
+          "404": {
+            "description": "Policy not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "policies"
+        ],
+        "summary": "Update policy by ID",
+        "description": "Update a policy by its ID.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "policy_id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated policy object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PolicyInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Policy updated successfully",
+            "schema": {
+              "$ref": "#/definitions/Policy"
+            }
+          },
+          "404": {
+            "description": "Policy not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "policies"
+        ],
+        "summary": "Delete policy by ID",
+        "description": "Delete a policy by its ID.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "policy_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Policy deleted successfully"
+          },
+          "404": {
+            "description": "Policy not found"
+          }
+        }
+      }
+    },
+    "/policies/{policy_id}/rules/{rule_id}": {
+      "post": {
+        "tags": [
+          "policies"
+        ],
+        "summary": "Add rule to policy",
+        "description": "Add a rule to the specified policy.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "policy_id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "rule_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Rule added to policy successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "policies"
+        ],
+        "summary": "Remove rule from policy",
+        "description": "Remove a rule from the specified policy.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "policy_id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "rule_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rule removed from policy successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/rules": {
+      "post": {
+        "tags": [
+          "rules"
+        ],
+        "summary": "Create a new rule",
+        "description": "Create a new rule with provided data.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Rule object to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RuleInput"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Rule created successfully",
+            "schema": {
+              "$ref": "#/definitions/Rule"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "rules"
+        ],
+        "summary": "Get all rules",
+        "description": "Retrieve all rules.",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of rules",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Rule"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rules/{rule_id}": {
+      "get": {
+        "tags": [
+          "rules"
+        ],
+        "summary": "Get rule by ID",
+        "description": "Retrieve a rule by its ID.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "rule_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rule found",
+            "schema": {
+              "$ref": "#/definitions/Rule"
+            }
+          },
+          "404": {
+            "description": "Rule not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "rules"
+        ],
+        "summary": "Delete rule by ID",
+        "description": "Delete a rule by its ID.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "rule_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rule deleted successfully"
+          },
+          "404": {
+            "description": "Rule not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "FirewallInput": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      },
+      "required": ["name"]
+    },
+    "Firewall": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      }
+    },
+    "PolicyInput": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["name"]
+    },
+    "Policy": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Rule"
+          }
+        }
+      }
+    },
+    "RuleInput": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "source_ip": {
+          "type": "string"
+        },
+        "destination_ip": {
+          "type": "string"
+        }
+      },
+      "required": ["name", "action", "source_ip", "destination_ip"]
+    },
+    "Rule": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "source_ip": {
+          "type": "string"
+        },
+        "destination_ip": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
+
+
+
