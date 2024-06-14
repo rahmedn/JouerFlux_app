@@ -37,9 +37,9 @@ A Flask application for managing firewalls and policies.
      you can modify your databe in config.py
      
     ```bash
-      flask db init
-      flask db migrate -m "Initial migration"
-     flask db upgrade
+    flask db init
+    flask db migrate -m "Initial migration"
+    flask db upgrade
      
   5. Generate test data to test your application
 
@@ -50,5 +50,41 @@ A Flask application for managing firewalls and policies.
    ```bash
      python run.py
    
-7. Access the API at http://127.0.0.1:5000/apidocs in your browser and enjoy it ;) 
+7. Access the API at http://127.0.0.1:5000/apidocs in your browser and enjoy it ;)
 
+## Running in Docker (Optional)
+
+To run the application in a Docker container, follow these steps:
+
+1. Build the Docker image from the Dockerfile:
+
+   ```bash
+   docker build -t firewall-manager .
+
+2. Run the Docker container
+   
+   ```bash
+   docker run -p 5000:5000 firewall-manager
+   
+4. Database Migration
+   
+- Enter the Docker container shell
+   ```bash
+   docker exec -it <container_id> /bin/bash
+
+- Inside the Docker container, initialize the database migrations
+  ```bash
+   flask db init
+
+- Generate a migration script
+  ```bash
+  flask db migrate -m "Initial migration"
+
+ - Apply the migration to the database
+    ```bash
+    flask db upgrade
+
+- Generate test data
+  ```bash
+  python generate_fake_data.py
+5. Access the API at http://localhost:5000/apidocs in your browser.
